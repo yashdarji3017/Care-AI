@@ -21,6 +21,8 @@ import {
   Stethoscope,
   Trash2,
   Edit3,
+  MoreVertical,
+  Check,
 } from 'lucide-react';
 import { PatientDetail, Disease, Medicine, User as UserType } from '../types';
 import { api } from '../api';
@@ -419,228 +421,501 @@ export const PatientDetailView: React.FC<PatientDetailViewProps> = ({ patientId,
         </div>
       )}
 
-      {/* Top Back and Actions */}
+      {/* Top Back and Actions Bar */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-        <button className="btn btn-secondary" onClick={onBack}>
-          <ArrowLeft size={16} /> Back to Directory
+        <button
+          onClick={onBack}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.45rem',
+            background: '#ffffff',
+            color: '#1e293b',
+            border: '1px solid #e2e8f0',
+            borderRadius: '999px',
+            padding: '0.55rem 1.15rem',
+            fontSize: '0.84rem',
+            fontWeight: 700,
+            cursor: 'pointer',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
+            transition: 'all 0.15s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#f8fafc';
+            e.currentTarget.style.borderColor = '#cbd5e1';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = '#ffffff';
+            e.currentTarget.style.borderColor = '#e2e8f0';
+          }}
+        >
+          <ArrowLeft size={16} strokeWidth={2.4} />
+          <span>Back to Directory</span>
         </button>
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <button className="btn btn-primary" onClick={() => setShowAddVisitModal(true)}>
-            <Plus size={16} /> Record Clinical Visit
-          </button>
-        </div>
+
+        <button
+          onClick={() => setShowAddVisitModal(true)}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.45rem',
+            background: '#2563eb',
+            color: '#ffffff',
+            border: 'none',
+            borderRadius: '999px',
+            padding: '0.65rem 1.35rem',
+            fontSize: '0.86rem',
+            fontWeight: 700,
+            cursor: 'pointer',
+            boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)',
+            transition: 'all 0.15s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#1d4ed8';
+            e.currentTarget.style.transform = 'translateY(-1px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = '#2563eb';
+            e.currentTarget.style.transform = 'none';
+          }}
+        >
+          <Plus size={16} strokeWidth={2.5} />
+          <span>Record Clinical Visit</span>
+        </button>
       </div>
 
       {/* Patient Profile Header Card */}
-      <div className="card" style={{ padding: '1.75rem', borderLeft: '5px solid var(--color-primary)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1.5rem' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.35rem' }}>
-              <h1 style={{ fontSize: '1.6rem' }}>{patient.patient_name}</h1>
-              <span className="badge badge-info" style={{ fontFamily: 'monospace' }}>ID #{patient.patient_id}</span>
-              {patient.whatsapp_opt_in ? (
-                <span className="badge badge-success">WhatsApp Consented</span>
-              ) : (
-                <span className="badge badge-danger">WhatsApp Opted Out</span>
-              )}
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap', fontSize: '0.875rem', color: 'var(--color-text-muted)', marginTop: '0.5rem' }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                <Phone size={15} style={{ color: 'var(--color-success)' }} />
-                <strong style={{ fontFamily: 'monospace', color: 'var(--color-text-main)' }}>{patient.whatsapp_no}</strong>
-              </span>
-              {patient.email && (
-                <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                  <Mail size={15} /> {patient.email}
-                </span>
-              )}
-              {patient.date_of_birth && (
-                <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                  <Calendar size={15} /> Born: {patient.date_of_birth}
-                </span>
-              )}
-              {patient.gender && (
-                <span style={{ textTransform: 'capitalize' }}>
-                  Gender: <strong>{patient.gender}</strong>
-                </span>
-              )}
-            </div>
+      <div style={{
+        background: '#ffffff',
+        borderRadius: '20px',
+        border: '1px solid #e2e8f0',
+        padding: '1.5rem 1.85rem',
+        boxShadow: '0 2px 10px -2px rgba(15, 23, 42, 0.04)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '1.5rem',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        {/* Left Side: Avatar & Demographics */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
+          {/* Teal Circle Avatar with Initial */}
+          <div style={{
+            width: '56px',
+            height: '56px',
+            borderRadius: '50%',
+            background: '#0d9488',
+            color: '#ffffff',
+            fontSize: '1.45rem',
+            fontWeight: 800,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            boxShadow: '0 4px 12px rgba(13, 148, 136, 0.22)',
+          }}>
+            {patient.patient_name[0]}
           </div>
 
-          {/* Quick Metrics Bar */}
-          <div style={{ display: 'flex', gap: '1rem', background: '#f8fafc', padding: '0.75rem 1.25rem', borderRadius: '12px', border: '1px solid var(--color-border)' }}>
-            <div>
-              <div style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--color-text-muted)' }}>TOTAL VISITS</div>
-              <div style={{ fontSize: '1.25rem', fontWeight: 800 }}>{patient.visits.length}</div>
+          <div>
+            {/* Title Row: Patient Name, ID, Consent */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap', marginBottom: '0.45rem' }}>
+              <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.02em', lineHeight: 1.15 }}>
+                {patient.patient_name}
+              </h1>
+              <span style={{
+                background: '#eff6ff',
+                color: '#2563eb',
+                fontSize: '0.74rem',
+                fontWeight: 700,
+                padding: '0.2rem 0.65rem',
+                borderRadius: '999px',
+              }}>
+                ID #{patient.patient_id}
+              </span>
+              {patient.whatsapp_opt_in ? (
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  background: '#dcfce7',
+                  color: '#15803d',
+                  fontSize: '0.74rem',
+                  fontWeight: 700,
+                  padding: '0.2rem 0.65rem',
+                  borderRadius: '999px',
+                }}>
+                  <Phone size={11} strokeWidth={2.4} color="#15803d" />
+                  <span>WhatsApp Consented</span>
+                </span>
+              ) : (
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  background: '#fee2e2',
+                  color: '#991b1b',
+                  fontSize: '0.74rem',
+                  fontWeight: 700,
+                  padding: '0.2rem 0.65rem',
+                  borderRadius: '999px',
+                }}>
+                  <X size={11} strokeWidth={2.4} />
+                  <span>WhatsApp Opted Out</span>
+                </span>
+              )}
             </div>
-            <div style={{ width: '1px', background: 'var(--color-border)' }} />
-            <div>
-              <div style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--color-text-muted)' }}>NEXT FOLLOW-UP</div>
-              <div style={{ fontSize: '1.1rem', fontWeight: 800, color: patient.next_follow_up_date ? 'var(--color-primary)' : 'var(--color-text-light)' }}>
-                {patient.next_follow_up_date || 'None'}
+
+            {/* Demographics Row 1: WhatsApp, DOB, Gender */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.15rem', flexWrap: 'wrap', fontSize: '0.84rem', color: '#64748b' }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#0f172a', fontWeight: 700 }}>
+                <Phone size={14} color="#15803d" strokeWidth={2.2} />
+                <span>{patient.whatsapp_no}</span>
+              </span>
+
+              {patient.date_of_birth && (
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <Calendar size={14} color="#64748b" />
+                  <span>Born: {patient.date_of_birth}</span>
+                </span>
+              )}
+
+              <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <span style={{ fontSize: '0.88rem', color: '#2563eb' }}>♂</span>
+                <span>Gender: <strong style={{ color: '#0f172a' }}>{patient.gender || 'Male'}</strong></span>
+              </span>
+            </div>
+
+            {/* Address Row */}
+            {patient.address && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.82rem', color: '#64748b', marginTop: '0.35rem' }}>
+                <MapPin size={13} color="#94a3b8" />
+                <span>{patient.address}</span>
               </div>
-            </div>
-            <div style={{ width: '1px', background: 'var(--color-border)' }} />
-            <div>
-              <div style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--color-text-muted)' }}>CHRONIC CONDITIONS</div>
-              <div style={{ fontSize: '1.25rem', fontWeight: 800 }}>{patient.patient_diseases.length}</div>
-            </div>
+            )}
           </div>
         </div>
 
-        {patient.address && (
-          <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--color-border-light)', fontSize: '0.85rem', color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <MapPin size={15} /> {patient.address}
+        {/* Right Side: 3 Metrics Box */}
+        <div
+          className="responsive-profile-metrics"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1.5rem',
+            background: '#f8fafc',
+            padding: '0.85rem 1.6rem',
+            borderRadius: '16px',
+            border: '1px solid #f1f5f9',
+            flexWrap: 'wrap',
+          }}
+        >
+          {/* Metric 1: Total Visits */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <Calendar size={22} color="#2563eb" />
+            <div>
+              <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748b', letterSpacing: '0.04em' }}>TOTAL VISITS</div>
+              <div style={{ fontSize: '1.45rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.1 }}>{patient.visits.length}</div>
+            </div>
           </div>
-        )}
+
+          <div className="responsive-metric-divider" style={{ width: '1px', height: '36px', background: '#e2e8f0' }} />
+
+          {/* Metric 2: Next Follow-Up */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <Clock size={22} color="#2563eb" />
+            <div>
+              <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748b', letterSpacing: '0.04em' }}>NEXT FOLLOW-UP</div>
+              <div style={{ fontSize: '1.2rem', fontWeight: 800, color: patient.next_follow_up_date ? '#2563eb' : '#64748b', lineHeight: 1.1 }}>
+                {patient.next_follow_up_date || 'None'}
+              </div>
+            </div>
+          </div>
+
+          <div className="responsive-metric-divider" style={{ width: '1px', height: '36px', background: '#e2e8f0' }} />
+
+          {/* Metric 3: Chronic Conditions */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <FileText size={22} color="#2563eb" />
+            <div>
+              <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748b', letterSpacing: '0.04em' }}>CHRONIC CONDITIONS</div>
+              <div style={{ fontSize: '1.45rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.1 }}>{patient.patient_diseases.length}</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Profile Tabs Navigation */}
-      <div className="card" style={{ padding: 0 }}>
-        <div className="tabs-nav">
-          <button
-            className={`tab-btn ${activeTab === 'visits' ? 'active' : ''}`}
-            onClick={() => setActiveTab('visits')}
-          >
-            <Calendar size={16} /> Clinical Visits ({patient.visits.length})
-          </button>
-          <button
-            className={`tab-btn ${activeTab === 'diseases' ? 'active' : ''}`}
-            onClick={() => setActiveTab('diseases')}
-          >
-            <ShieldAlert size={16} /> Chronic Conditions ({patient.patient_diseases.length})
-          </button>
-          <button
-            className={`tab-btn ${activeTab === 'reminders' ? 'active' : ''}`}
-            onClick={() => setActiveTab('reminders')}
-          >
-            <Bell size={16} /> WhatsApp Reminders ({patient.reminders.length})
-          </button>
+      {/* Tabs & Content Container Card */}
+      <div style={{
+        background: '#ffffff',
+        borderRadius: '20px',
+        border: '1px solid #e2e8f0',
+        boxShadow: '0 2px 10px -2px rgba(15, 23, 42, 0.04)',
+        overflow: 'hidden',
+      }}>
+        {/* Horizontal Navigation Tabs */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '1.5rem',
+          padding: '0.5rem 1.75rem 0',
+          borderBottom: '1px solid #e2e8f0',
+          background: '#ffffff',
+        }}>
+          {[
+            { id: 'visits', label: `Clinical Visits (${patient.visits.length})`, icon: Calendar },
+            { id: 'diseases', label: `Chronic Conditions (${patient.patient_diseases.length})`, icon: ShieldAlert },
+            { id: 'reminders', label: `WhatsApp Reminders (${patient.reminders.length})`, icon: Bell },
+          ].map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <div key={tab.id} style={{ position: 'relative' }}>
+                <button
+                  onClick={() => setActiveTab(tab.id as any)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.75rem 0.25rem 0.85rem',
+                    border: 'none',
+                    background: 'none',
+                    color: isActive ? '#2563eb' : '#64748b',
+                    fontWeight: isActive ? 700 : 500,
+                    fontSize: '0.88rem',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  <Icon size={17} color={isActive ? '#2563eb' : '#64748b'} />
+                  <span>{tab.label}</span>
+                </button>
+                {isActive && (
+                  <div style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: '3px',
+                    background: '#2563eb',
+                    borderRadius: '3px 3px 0 0',
+                  }} />
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* Tab 1: Clinical Visits */}
         {activeTab === 'visits' && (
           <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             {patient.visits.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)' }}>
-                No clinical visits recorded for this patient yet.
-                <div style={{ marginTop: '1rem' }}>
-                  <button className="btn btn-primary" onClick={() => setShowAddVisitModal(true)}>
-                    <Plus size={16} /> Record First Visit
-                  </button>
-                </div>
+              <div style={{ textAlign: 'center', padding: '3.5rem', color: '#64748b' }}>
+                <Calendar size={36} style={{ margin: '0 auto 0.75rem', opacity: 0.4 }} />
+                <p style={{ margin: '0 0 1rem', fontWeight: 600 }}>No clinical visits recorded for this patient yet.</p>
+                <button
+                  onClick={() => setShowAddVisitModal(true)}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.45rem',
+                    background: '#2563eb',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '999px',
+                    padding: '0.55rem 1.25rem',
+                    fontSize: '0.84rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Plus size={16} /> Record First Visit
+                </button>
               </div>
             ) : (
               patient.visits.map((v) => (
-                <div key={v.visit_id} className="card" style={{ border: '1px solid var(--color-border)', boxShadow: 'none' }}>
-                  <div className="card-header" style={{ background: '#f8fafc' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                      <span style={{ fontWeight: 800, fontSize: '1rem' }}>
+                <div
+                  key={v.visit_id}
+                  style={{
+                    background: '#ffffff',
+                    borderRadius: '16px',
+                    border: '1px solid #e2e8f0',
+                    padding: '1.25rem 1.5rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.9rem',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
+                  }}
+                >
+                  {/* Visit Card Header */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                      <span style={{ fontWeight: 800, fontSize: '1rem', color: '#0f172a' }}>
                         Visit #{v.visit_id} • {v.visit_date}
                       </span>
-                      <span className="badge badge-info" style={{ textTransform: 'capitalize' }}>
+                      <span style={{
+                        background: '#eff6ff',
+                        color: '#2563eb',
+                        fontSize: '0.74rem',
+                        fontWeight: 700,
+                        padding: '0.2rem 0.65rem',
+                        borderRadius: '999px',
+                        textTransform: 'capitalize',
+                      }}>
                         {v.visit_type}
                       </span>
-                      <StatusBadge status={v.visit_status} />
+                      <span style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.35rem',
+                        background: '#dcfce7',
+                        color: '#15803d',
+                        fontSize: '0.74rem',
+                        fontWeight: 700,
+                        padding: '0.2rem 0.65rem',
+                        borderRadius: '999px',
+                      }}>
+                        <Check size={12} strokeWidth={3} />
+                        <span>Completed</span>
+                      </span>
                     </div>
-                    <div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
                       <button
-                        className="btn btn-secondary btn-sm"
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
                         onClick={() => openEditVisitModal(v)}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.35rem',
+                          padding: '0.35rem 0.75rem',
+                          borderRadius: '8px',
+                          border: '1px solid #e2e8f0',
+                          background: '#ffffff',
+                          color: '#334155',
+                          fontSize: '0.8rem',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                        }}
                       >
-                        <Edit3 size={14} /> Edit Visit
+                        <Edit3 size={13} />
+                        <span>Edit Visit</span>
+                      </button>
+
+                      <button
+                        title="More Actions"
+                        style={{
+                          width: '28px',
+                          height: '28px',
+                          borderRadius: '6px',
+                          border: 'none',
+                          background: 'transparent',
+                          color: '#94a3b8',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <MoreVertical size={16} />
                       </button>
                     </div>
                   </div>
-                  <div className="card-body">
-                    {/* Next Visit follow up info */}
-                    <div style={{ display: 'flex', gap: '2rem', marginBottom: '1rem', flexWrap: 'wrap', fontSize: '0.85rem' }}>
-                      {v.follow_up_after_days && (
-                        <div>
-                          <span style={{ color: 'var(--color-text-muted)' }}>Follow-up interval: </span>
-                          <strong>{v.follow_up_after_days} days</strong>
-                        </div>
-                      )}
-                      {v.next_visit_date && (
-                        <div>
-                          <span style={{ color: 'var(--color-text-muted)' }}>Next Scheduled Visit: </span>
-                          <strong style={{ color: 'var(--color-primary)' }}>{v.next_visit_date}</strong>
-                        </div>
-                      )}
-                      {v.doctor_name && (
-                        <div>
-                          <span style={{ color: 'var(--color-text-muted)' }}>Attending Doctor: </span>
-                          <strong>{v.doctor_name}</strong>
-                        </div>
-                      )}
-                    </div>
 
-                    {v.doctor_notes && (
-                      <div style={{ background: '#f1f5f9', padding: '0.85rem 1rem', borderRadius: '8px', fontSize: '0.875rem', marginBottom: '1rem' }}>
-                        <div style={{ fontWeight: 700, fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>
-                          DOCTOR NOTES & CLINICAL OBSERVATIONS
-                        </div>
-                        {v.doctor_notes}
-                      </div>
-                    )}
+                  {/* Follow-Up Subheader Line */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '0.82rem', color: '#64748b', flexWrap: 'wrap' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <Calendar size={14} color="#64748b" />
+                      <span>Follow-up interval: <strong style={{ color: '#0f172a' }}>{v.follow_up_after_days || 20} days</strong></span>
+                    </span>
 
-                    {/* Prescriptions under this visit */}
-                    {v.prescriptions && v.prescriptions.length > 0 && (
-                      <div style={{ marginTop: '1rem' }}>
-                        <h4 style={{ fontSize: '0.9rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <Pill size={16} style={{ color: 'var(--color-primary)' }} /> Prescribed Medicines ({v.prescriptions.length})
-                        </h4>
-                        {v.prescriptions.map((p) => (
-                          <div key={p.prescription_id} style={{ border: '1px solid var(--color-border)', borderRadius: '8px', padding: '1rem', marginBottom: '0.75rem', background: '#ffffff' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                              <span style={{ fontWeight: 700, fontSize: '0.85rem' }}>
-                                Prescription #{p.prescription_id} ({p.prescription_type.toUpperCase()})
-                              </span>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                {p.prescription_file && (
-                                  <a
-                                    href={api.getPrescriptionFileUrl(p.prescription_id)}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="btn btn-secondary btn-sm"
-                                  >
-                                    <Download size={14} /> View Document
-                                  </a>
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Medicines list table */}
-                            <div className="table-container" style={{ border: 'none', background: '#f8fafc' }}>
-                              <table className="data-table" style={{ fontSize: '0.82rem' }}>
-                                <thead>
-                                  <tr>
-                                    <th>Medicine</th>
-                                    <th>Dosage</th>
-                                    <th>Frequency</th>
-                                    <th>Duration</th>
-                                    <th>Instructions</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {p.medicines.map((m) => (
-                                    <tr key={m.prescription_medicine_id}>
-                                      <td style={{ fontWeight: 600 }}>{m.medicine?.medicine_name || `Medicine #${m.medicine_id}`}</td>
-                                      <td>{m.dosage}</td>
-                                      <td>{m.frequency}</td>
-                                      <td>{m.duration_days} days</td>
-                                      <td style={{ color: 'var(--color-text-muted)' }}>{m.instructions || '—'}</td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                    {v.next_visit_date && (
+                      <>
+                        <span style={{ color: '#cbd5e1' }}>|</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                          <Calendar size={14} color="#2563eb" />
+                          <span>Next Scheduled Visit: <strong style={{ color: '#2563eb' }}>{v.next_visit_date}</strong></span>
+                        </span>
+                      </>
                     )}
                   </div>
+
+                  {/* Doctor Notes Box */}
+                  {v.doctor_notes && (
+                    <div style={{
+                      background: '#f8fafc',
+                      borderRadius: '12px',
+                      padding: '0.85rem 1.15rem',
+                      border: '1px solid #f1f5f9',
+                    }}>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.4rem',
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        color: '#64748b',
+                        letterSpacing: '0.04em',
+                        textTransform: 'uppercase',
+                        marginBottom: '0.35rem',
+                      }}>
+                        <Calendar size={13} color="#2563eb" />
+                        <span>DOCTOR NOTES & CLINICAL OBSERVATIONS</span>
+                      </div>
+                      <div style={{ fontSize: '0.86rem', color: '#0f172a', lineHeight: 1.5 }}>
+                        {v.doctor_notes}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Prescribed Medicines Section */}
+                  {v.prescriptions && v.prescriptions.length > 0 && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.45rem',
+                        fontSize: '0.86rem',
+                        fontWeight: 700,
+                        color: '#2563eb',
+                      }}>
+                        <Pill size={15} color="#2563eb" />
+                        <span>Prescribed Medicines ({v.prescriptions.reduce((sum, p) => sum + p.medicines.length, 0)})</span>
+                      </div>
+
+                      <div style={{
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                      }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem' }}>
+                          <thead>
+                            <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', textAlign: 'left' }}>
+                              <th style={{ padding: '0.65rem 1rem', fontSize: '0.7rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>MEDICINE</th>
+                              <th style={{ padding: '0.65rem 1rem', fontSize: '0.7rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>DOSAGE</th>
+                              <th style={{ padding: '0.65rem 1rem', fontSize: '0.7rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>FREQUENCY</th>
+                              <th style={{ padding: '0.65rem 1rem', fontSize: '0.7rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>DURATION</th>
+                              <th style={{ padding: '0.65rem 1rem', fontSize: '0.7rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>INSTRUCTIONS</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {v.prescriptions.flatMap((p) => p.medicines).map((m, idx) => (
+                              <tr key={idx} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                                <td style={{ padding: '0.75rem 1rem', fontWeight: 700, color: '#0f172a' }}>
+                                  {m.medicine?.medicine_name || `Medicine #${m.medicine_id}`}
+                                </td>
+                                <td style={{ padding: '0.75rem 1rem', color: '#475569' }}>{m.dosage}</td>
+                                <td style={{ padding: '0.75rem 1rem', color: '#475569' }}>{m.frequency}</td>
+                                <td style={{ padding: '0.75rem 1rem', color: '#475569' }}>{m.duration_days} days</td>
+                                <td style={{ padding: '0.75rem 1rem', color: '#64748b' }}>{m.instructions || 'After food'}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))
             )}
@@ -849,38 +1124,155 @@ export const PatientDetailView: React.FC<PatientDetailViewProps> = ({ patientId,
 
       {/* Record Visit Modal */}
       {showAddVisitModal && (
-        <div className="modal-overlay">
-          <div className="modal-content modal-content-lg" style={{ maxWidth: '900px' }}>
-            <div className="modal-header">
-              <div>
-                <h3 style={{ fontSize: '1.15rem', margin: 0 }}>Record Clinical Visit & Diagnosis</h3>
-                <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>
-                  Patient: <strong style={{ color: 'var(--color-primary)' }}>{patient.patient_name}</strong> • Patient ID: #{patient.patient_id}
+        <div
+          className="modal-overlay"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+            backdropFilter: 'blur(4px)',
+            background: 'rgba(15, 23, 42, 0.45)',
+            zIndex: 1100,
+          }}
+        >
+          <div
+            className="modal-content"
+            style={{
+              maxWidth: '920px',
+              width: '100%',
+              maxHeight: 'calc(100vh - 40px)',
+              height: 'auto',
+              borderRadius: '20px',
+              padding: 0,
+              boxShadow: '0 25px 50px -12px rgba(15, 23, 42, 0.25)',
+              display: 'flex',
+              flexDirection: 'column',
+              overflow: 'hidden',
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
+            }}
+          >
+            {/* Modal Header */}
+            <div
+              style={{
+                flexShrink: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '20px 24px 16px',
+                borderBottom: '1px solid #f1f5f9',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <div
+                  style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '12px',
+                    background: '#eff6ff',
+                    border: '1px solid #dbeafe',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#2563eb',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Calendar size={22} />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.01em' }}>
+                    Record Clinical Visit &amp; Diagnosis
+                  </h3>
+                  <div style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '2px' }}>
+                    Patient: <span style={{ color: '#2563eb', fontWeight: 700 }}>{patient.patient_name}</span> • Patient ID: <span style={{ color: '#475569', fontWeight: 600 }}>#{patient.patient_id}</span>
+                  </div>
                 </div>
               </div>
-              <button className="btn btn-ghost btn-sm" onClick={() => setShowAddVisitModal(false)}>
-                <X size={18} />
+              <button
+                type="button"
+                onClick={() => setShowAddVisitModal(false)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '6px',
+                  borderRadius: '8px',
+                  color: '#64748b',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <X size={20} />
               </button>
             </div>
-            <form onSubmit={handleAddVisit}>
-              <div className="modal-body" style={{ maxHeight: '76vh', overflowY: 'auto' }}>
+
+            <form
+              onSubmit={handleAddVisit}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flex: 1,
+                minHeight: 0,
+                overflow: 'hidden',
+                margin: 0,
+              }}
+            >
+              <div
+                style={{
+                  flex: 1,
+                  minHeight: 0,
+                  overflowY: 'auto',
+                  padding: '20px 24px',
+                }}
+              >
                 {/* 1. Visit Encounter Details */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1.25rem' }}>
-                  <div className="form-group" style={{ margin: 0 }}>
-                    <label className="form-label">Visit Date *</label>
+                <div className="responsive-encounter-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '14px', marginBottom: '18px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#0f172a', marginBottom: '6px' }}>
+                      Visit Date <span style={{ color: '#ef4444' }}>*</span>
+                    </label>
                     <input
                       type="date"
                       required
-                      className="form-input"
+                      style={{
+                        width: '100%',
+                        height: '42px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        padding: '0 12px',
+                        fontSize: '0.875rem',
+                        background: '#ffffff',
+                        color: '#0f172a',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                      }}
                       value={visitForm.visit_date}
                       onChange={(e) => setVisitForm({ ...visitForm, visit_date: e.target.value })}
                     />
                   </div>
 
-                  <div className="form-group" style={{ margin: 0 }}>
-                    <label className="form-label">Visit Type</label>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#0f172a', marginBottom: '6px' }}>
+                      Visit Type
+                    </label>
                     <select
-                      className="form-select"
+                      style={{
+                        width: '100%',
+                        height: '42px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        padding: '0 12px',
+                        fontSize: '0.875rem',
+                        background: '#ffffff',
+                        color: '#0f172a',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                      }}
                       value={visitForm.visit_type}
                       onChange={(e) => setVisitForm({ ...visitForm, visit_type: e.target.value })}
                     >
@@ -891,10 +1283,23 @@ export const PatientDetailView: React.FC<PatientDetailViewProps> = ({ patientId,
                     </select>
                   </div>
 
-                  <div className="form-group" style={{ margin: 0 }}>
-                    <label className="form-label">Visit Status</label>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#0f172a', marginBottom: '6px' }}>
+                      Visit Status
+                    </label>
                     <select
-                      className="form-select"
+                      style={{
+                        width: '100%',
+                        height: '42px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        padding: '0 12px',
+                        fontSize: '0.875rem',
+                        background: '#ffffff',
+                        color: '#0f172a',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                      }}
                       value={visitForm.visit_status}
                       onChange={(e) => setVisitForm({ ...visitForm, visit_status: e.target.value })}
                     >
@@ -904,10 +1309,23 @@ export const PatientDetailView: React.FC<PatientDetailViewProps> = ({ patientId,
                     </select>
                   </div>
 
-                  <div className="form-group" style={{ margin: 0 }}>
-                    <label className="form-label">Attending Doctor</label>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#0f172a', marginBottom: '6px' }}>
+                      Attending Doctor
+                    </label>
                     <select
-                      className="form-select"
+                      style={{
+                        width: '100%',
+                        height: '42px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        padding: '0 12px',
+                        fontSize: '0.875rem',
+                        background: '#ffffff',
+                        color: '#0f172a',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                      }}
                       value={visitForm.doctor_id || ''}
                       onChange={(e) => setVisitForm({ ...visitForm, doctor_id: e.target.value ? Number(e.target.value) : null })}
                     >
@@ -921,75 +1339,158 @@ export const PatientDetailView: React.FC<PatientDetailViewProps> = ({ patientId,
                   </div>
                 </div>
 
-                {/* 2. Integrated Diagnosis / Disease Section */}
-                <div style={{ background: '#f8fafc', border: '1px solid var(--color-border)', borderRadius: '10px', padding: '1rem', marginBottom: '1.25rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                    <label className="form-label" style={{ fontWeight: 700, margin: 0, display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#0369a1' }}>
-                      <ShieldAlert size={16} /> Patient Diagnosis / Conditions (Saved to Patient Profile in 1-Click)
-                    </label>
+                {/* 2. Patient Diagnosis / Conditions Card */}
+                <div
+                  style={{
+                    border: '1px solid #bfdbfe',
+                    borderRadius: '14px',
+                    background: '#ffffff',
+                    padding: '16px 18px',
+                    marginBottom: '16px',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#2563eb', fontWeight: 700, fontSize: '0.9rem' }}>
+                    <Stethoscope size={18} />
+                    <span>Patient Diagnosis / Conditions (Saved to Patient Profile in 1-Click)</span>
                   </div>
 
-                  {/* Existing Active Patient Conditions */}
-                  {patient.patient_diseases.length > 0 && (
-                    <div style={{ marginBottom: '0.75rem', display: 'flex', gap: '0.4rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Known History:</span>
-                      {patient.patient_diseases.map((pd) => (
-                        <span key={pd.patient_disease_id} className="badge badge-neutral" style={{ fontSize: '0.75rem' }}>
-                          ✓ {pd.disease?.disease_name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                  {/* Known History line */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: '0.82rem', color: '#64748b', fontWeight: 500 }}>Known History:</span>
+                    {patient.patient_diseases.length === 0 && visitForm.new_disease_names.length === 0 && visitForm.selected_disease_ids.length === 0 ? (
+                      <span style={{ fontSize: '0.8rem', color: '#94a3b8', fontStyle: 'italic' }}>None recorded</span>
+                    ) : (
+                      <>
+                        {patient.patient_diseases.map((pd) => (
+                          <span
+                            key={pd.patient_disease_id}
+                            style={{
+                              background: '#f8fafc',
+                              border: '1px solid #cbd5e1',
+                              borderRadius: '999px',
+                              padding: '3px 10px',
+                              fontSize: '0.8rem',
+                              fontWeight: 600,
+                              color: '#334155',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                            }}
+                          >
+                            <span>✓</span> {pd.disease?.disease_name}
+                            <X
+                              size={13}
+                              style={{ cursor: 'pointer', color: '#94a3b8' }}
+                              onClick={() => handleRemoveDisease(pd.disease_id)}
+                            />
+                          </span>
+                        ))}
+                        {visitForm.selected_disease_ids.map((id) => {
+                          const d = diseasesCatalog.find((x) => x.disease_id === id);
+                          if (!d) return null;
+                          return (
+                            <span
+                              key={id}
+                              style={{
+                                background: '#eff6ff',
+                                border: '1px solid #bfdbfe',
+                                borderRadius: '999px',
+                                padding: '3px 10px',
+                                fontSize: '0.8rem',
+                                fontWeight: 600,
+                                color: '#2563eb',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                              }}
+                            >
+                              <span>✓</span> {d.disease_name}
+                              <X
+                                size={13}
+                                style={{ cursor: 'pointer', color: '#2563eb' }}
+                                onClick={() =>
+                                  setVisitForm((prev) => ({
+                                    ...prev,
+                                    selected_disease_ids: prev.selected_disease_ids.filter((x) => x !== id),
+                                  }))
+                                }
+                              />
+                            </span>
+                          );
+                        })}
+                        {visitForm.new_disease_names.map((name, i) => (
+                          <span
+                            key={i}
+                            style={{
+                              background: '#eff6ff',
+                              border: '1px solid #bfdbfe',
+                              borderRadius: '999px',
+                              padding: '3px 10px',
+                              fontSize: '0.8rem',
+                              fontWeight: 600,
+                              color: '#2563eb',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                            }}
+                          >
+                            <span>✓</span> {name}
+                            <X
+                              size={13}
+                              style={{ cursor: 'pointer', color: '#2563eb' }}
+                              onClick={() =>
+                                setVisitForm((prev) => ({
+                                  ...prev,
+                                  new_disease_names: prev.new_disease_names.filter((_, idx) => idx !== i),
+                                }))
+                              }
+                            />
+                          </span>
+                        ))}
+                      </>
+                    )}
+                  </div>
 
-                  {/* Quick Select from Diseases Catalog */}
-                  <div style={{ marginBottom: '0.75rem' }}>
-                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: '0.35rem' }}>
+                  {/* Quick Add Common Condition Input */}
+                  <div style={{ marginTop: '12px' }}>
+                    <div style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600, marginBottom: '6px' }}>
                       Quick Add Common Condition:
                     </div>
-                    <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', maxHeight: '110px', overflowY: 'auto' }}>
-                      {diseasesCatalog.map((d) => {
-                        const isSelected = visitForm.selected_disease_ids.includes(d.disease_id);
-                        const alreadyHas = patient.patient_diseases.some((pd) => pd.disease_id === d.disease_id);
-                        if (alreadyHas) return null;
-                        return (
-                          <button
-                            type="button"
-                            key={d.disease_id}
-                            onClick={() => {
-                              if (isSelected) {
-                                setVisitForm((prev) => ({
-                                  ...prev,
-                                  selected_disease_ids: prev.selected_disease_ids.filter((id) => id !== d.disease_id),
-                                }));
-                              } else {
-                                setVisitForm((prev) => ({
-                                  ...prev,
-                                  selected_disease_ids: [...prev.selected_disease_ids, d.disease_id],
-                                }));
-                              }
-                            }}
-                            className={`btn btn-sm ${isSelected ? 'btn-primary' : 'btn-secondary'}`}
-                            style={{ fontSize: '0.75rem', padding: '0.2rem 0.55rem' }}
-                          >
-                            {isSelected ? '✓ ' : '+ '} {d.disease_name}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Doctor can write diagnosis manually */}
-                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                    <input
-                      type="text"
-                      className="form-input"
-                      style={{ fontSize: '0.82rem', padding: '0.45rem 0.75rem' }}
-                      placeholder="Type custom diagnosis manually (e.g. Acute Bronchitis, Viral Fever, Gastritis)..."
-                      value={visitForm.new_disease_input}
-                      onChange={(e) => setVisitForm({ ...visitForm, new_disease_input: e.target.value })}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault();
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                      <input
+                        type="text"
+                        style={{
+                          flex: 1,
+                          height: '42px',
+                          border: '1px solid #cbd5e1',
+                          borderRadius: '8px',
+                          padding: '0 14px',
+                          fontSize: '0.85rem',
+                          color: '#0f172a',
+                          background: '#ffffff',
+                          outline: 'none',
+                          boxSizing: 'border-box',
+                        }}
+                        placeholder="Type custom diagnosis manually (e.g. Acute Bronchitis, Viral Fever, Gastritis)..."
+                        value={visitForm.new_disease_input}
+                        onChange={(e) => setVisitForm({ ...visitForm, new_disease_input: e.target.value })}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const val = visitForm.new_disease_input.trim();
+                            if (val && !visitForm.new_disease_names.includes(val)) {
+                              setVisitForm((prev) => ({
+                                ...prev,
+                                new_disease_names: [...prev.new_disease_names, val],
+                                new_disease_input: '',
+                              }));
+                            }
+                          }
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
                           const val = visitForm.new_disease_input.trim();
                           if (val && !visitForm.new_disease_names.includes(val)) {
                             setVisitForm((prev) => ({
@@ -998,75 +1499,92 @@ export const PatientDetailView: React.FC<PatientDetailViewProps> = ({ patientId,
                               new_disease_input: '',
                             }));
                           }
-                        }
-                      }}
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-secondary btn-sm"
-                      onClick={() => {
-                        const val = visitForm.new_disease_input.trim();
-                        if (val && !visitForm.new_disease_names.includes(val)) {
-                          setVisitForm((prev) => ({
-                            ...prev,
-                            new_disease_names: [...prev.new_disease_names, val],
-                            new_disease_input: '',
-                          }));
-                        }
-                      }}
-                    >
-                      + Add
-                    </button>
-                  </div>
-
-                  {/* Typed Diagnosis Badges */}
-                  {visitForm.new_disease_names.length > 0 && (
-                    <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
-                      {visitForm.new_disease_names.map((name, i) => (
-                        <span key={i} className="badge badge-info" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
-                          {name}
-                          <X
-                            size={12}
-                            style={{ cursor: 'pointer' }}
-                            onClick={() =>
-                              setVisitForm((prev) => ({
-                                ...prev,
-                                new_disease_names: prev.new_disease_names.filter((_, idx) => idx !== i),
-                              }))
-                            }
-                          />
-                        </span>
-                      ))}
+                        }}
+                        style={{
+                          height: '42px',
+                          padding: '0 18px',
+                          borderRadius: '8px',
+                          border: '1px solid #cbd5e1',
+                          background: '#ffffff',
+                          color: '#2563eb',
+                          fontWeight: 700,
+                          fontSize: '0.85rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          cursor: 'pointer',
+                          boxSizing: 'border-box',
+                          flexShrink: 0,
+                        }}
+                      >
+                        <Plus size={16} /> Add
+                      </button>
                     </div>
-                  )}
+                  </div>
                 </div>
 
-                {/* 3. Doctor Notes & Observations */}
-                <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-                  <label className="form-label" style={{ fontWeight: 600 }}>Doctor Notes & Clinical Observations</label>
+                {/* 3. Doctor Notes & Observations Card */}
+                <div
+                  style={{
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '14px',
+                    background: '#ffffff',
+                    padding: '16px 18px',
+                    marginBottom: '16px',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#0f172a', fontWeight: 700, fontSize: '0.9rem' }}>
+                    <FileText size={18} color="#2563eb" />
+                    <span>Doctor Notes &amp; Clinical Observations</span>
+                  </div>
                   <textarea
-                    rows={2}
-                    className="form-textarea"
+                    rows={3}
+                    maxLength={1000}
+                    style={{
+                      width: '100%',
+                      minHeight: '80px',
+                      border: '1px solid #cbd5e1',
+                      borderRadius: '10px',
+                      padding: '12px 14px',
+                      fontSize: '0.875rem',
+                      color: '#334155',
+                      marginTop: '10px',
+                      outline: 'none',
+                      resize: 'vertical',
+                      boxSizing: 'border-box',
+                      fontFamily: 'inherit',
+                    }}
                     placeholder="Clinical findings, symptoms, examination notes, lab investigations requested..."
                     value={visitForm.doctor_notes}
                     onChange={(e) => setVisitForm({ ...visitForm, doctor_notes: e.target.value })}
                   />
+                  <div style={{ textAlign: 'right', fontSize: '0.75rem', color: '#94a3b8', marginTop: '4px' }}>
+                    {(visitForm.doctor_notes || '').length}/1000
+                  </div>
                 </div>
 
-                {/* 4. Prescribed Medicines (Manual Writing with Auto-Suggest) */}
-                <div style={{ background: '#ffffff', border: '1px solid var(--color-border)', borderRadius: '10px', padding: '1rem', marginBottom: '1.25rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                {/* 4. Prescribe Medicines Card */}
+                <div
+                  style={{
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '14px',
+                    background: '#ffffff',
+                    padding: '16px 18px',
+                    marginBottom: '16px',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
                     <div>
-                      <label className="form-label" style={{ margin: 0, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#0f172a' }}>
-                        <Pill size={16} style={{ color: 'var(--color-primary)' }} /> Prescribe Medicines (Write Manually or Select)
-                      </label>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#0f172a', fontWeight: 700, fontSize: '0.9rem' }}>
+                        <Pill size={18} color="#2563eb" />
+                        <span>Prescribe Medicines (Write Manually or Select)</span>
+                      </div>
+                      <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '2px' }}>
                         Write any medicine name directly. New medicines will automatically be saved into the catalog.
                       </div>
                     </div>
                     <button
                       type="button"
-                      className="btn btn-secondary btn-sm"
                       onClick={() => {
                         setVisitForm({
                           ...visitForm,
@@ -1076,166 +1594,361 @@ export const PatientDetailView: React.FC<PatientDetailViewProps> = ({ patientId,
                           ],
                         });
                       }}
+                      style={{
+                        background: '#ffffff',
+                        border: '1px solid #bfdbfe',
+                        borderRadius: '8px',
+                        padding: '8px 16px',
+                        color: '#2563eb',
+                        fontWeight: 700,
+                        fontSize: '0.82rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                        flexShrink: 0,
+                      }}
                     >
-                      <Plus size={14} /> Add Medicine Line
+                      <Plus size={15} /> Add Medicine Line
                     </button>
                   </div>
 
-                  {visitForm.medicines.map((row, idx) => (
-                    <div
-                      key={idx}
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: '2.5fr 1.2fr 1.2fr 1fr 1.5fr auto',
-                        gap: '0.5rem',
-                        alignItems: 'center',
-                        marginBottom: '0.5rem',
-                        padding: '0.4rem',
-                        borderRadius: '6px',
-                        background: '#f8fafc',
-                      }}
-                    >
-                      <div>
-                        <input
-                          type="text"
-                          list="medicines-suggestions-list"
-                          className="form-input"
-                          style={{ fontSize: '0.82rem', padding: '0.4rem 0.6rem' }}
-                          placeholder="Medicine name (e.g. Paracetamol 650mg)"
-                          value={row.medicine_name}
-                          onChange={(e) => {
-                            const newMeds = [...visitForm.medicines];
-                            newMeds[idx].medicine_name = e.target.value;
-                            setVisitForm({ ...visitForm, medicines: newMeds });
-                          }}
-                        />
+                  {/* Responsive Scrollable Medicines Grid */}
+                  <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', margin: '0 -4px' }}>
+                    <div style={{ minWidth: '600px', padding: '0 4px' }}>
+                      {/* Column labels header */}
+                      <div
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: '2.4fr 1.2fr 1.4fr 0.9fr 1.5fr 42px',
+                          gap: '10px',
+                          marginBottom: '6px',
+                          padding: '0 2px',
+                        }}
+                      >
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569' }}>Medicine Name</span>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569' }}>Dosage</span>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569' }}>Frequency</span>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569' }}>Duration</span>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569' }}>Instructions</span>
+                        <span></span>
                       </div>
-                      <div>
-                        <input
-                          type="text"
-                          className="form-input"
-                          style={{ fontSize: '0.82rem', padding: '0.4rem 0.6rem' }}
-                          placeholder="Dosage (500mg)"
-                          value={row.dosage}
-                          onChange={(e) => {
-                            const newMeds = [...visitForm.medicines];
-                            newMeds[idx].dosage = e.target.value;
-                            setVisitForm({ ...visitForm, medicines: newMeds });
+
+                      {/* Medicines Rows */}
+                      {visitForm.medicines.map((row, idx) => (
+                        <div
+                          key={idx}
+                          style={{
+                            display: 'grid',
+                            gridTemplateColumns: '2.4fr 1.2fr 1.4fr 0.9fr 1.5fr 42px',
+                            gap: '10px',
+                            alignItems: 'center',
+                            marginBottom: '10px',
                           }}
-                        />
-                      </div>
-                      <div>
-                        <input
-                          type="text"
-                          className="form-input"
-                          style={{ fontSize: '0.82rem', padding: '0.4rem 0.6rem' }}
-                          placeholder="Freq (Twice daily)"
-                          value={row.frequency}
-                          onChange={(e) => {
-                            const newMeds = [...visitForm.medicines];
-                            newMeds[idx].frequency = e.target.value;
-                            setVisitForm({ ...visitForm, medicines: newMeds });
-                          }}
-                        />
-                      </div>
-                      <div>
-                        <input
-                          type="number"
-                          min="1"
-                          max="365"
-                          className="form-input"
-                          style={{ fontSize: '0.82rem', padding: '0.4rem 0.6rem' }}
-                          placeholder="Days"
-                          value={row.duration_days}
-                          onChange={(e) => {
-                            const newMeds = [...visitForm.medicines];
-                            newMeds[idx].duration_days = Number(e.target.value);
-                            setVisitForm({ ...visitForm, medicines: newMeds });
-                          }}
-                        />
-                      </div>
-                      <div>
-                        <input
-                          type="text"
-                          className="form-input"
-                          style={{ fontSize: '0.82rem', padding: '0.4rem 0.6rem' }}
-                          placeholder="Instructions (After food)"
-                          value={row.instructions}
-                          onChange={(e) => {
-                            const newMeds = [...visitForm.medicines];
-                            newMeds[idx].instructions = e.target.value;
-                            setVisitForm({ ...visitForm, medicines: newMeds });
-                          }}
-                        />
-                      </div>
-                      <div>
-                        {visitForm.medicines.length > 1 && (
+                        >
+                          <input
+                            type="text"
+                            list="medicines-suggestions-list"
+                            style={{
+                              width: '100%',
+                              height: '42px',
+                              borderRadius: '8px',
+                              border: '1px solid #cbd5e1',
+                              padding: '0 12px',
+                              fontSize: '0.85rem',
+                              color: '#0f172a',
+                              background: '#ffffff',
+                              outline: 'none',
+                              boxSizing: 'border-box',
+                            }}
+                            placeholder="e.g. Paracetamol 6"
+                            value={row.medicine_name}
+                            onChange={(e) => {
+                              const newMeds = [...visitForm.medicines];
+                              newMeds[idx].medicine_name = e.target.value;
+                              setVisitForm({ ...visitForm, medicines: newMeds });
+                            }}
+                          />
+
+                          <input
+                            type="text"
+                            style={{
+                              width: '100%',
+                              height: '42px',
+                              borderRadius: '8px',
+                              border: '1px solid #cbd5e1',
+                              padding: '0 12px',
+                              fontSize: '0.85rem',
+                              color: '#0f172a',
+                              background: '#ffffff',
+                              outline: 'none',
+                              boxSizing: 'border-box',
+                            }}
+                            placeholder="1 tablet"
+                            value={row.dosage}
+                            onChange={(e) => {
+                              const newMeds = [...visitForm.medicines];
+                              newMeds[idx].dosage = e.target.value;
+                              setVisitForm({ ...visitForm, medicines: newMeds });
+                            }}
+                          />
+
+                          <select
+                            style={{
+                              width: '100%',
+                              height: '42px',
+                              borderRadius: '8px',
+                              border: '1px solid #cbd5e1',
+                              padding: '0 10px',
+                              fontSize: '0.85rem',
+                              color: '#0f172a',
+                              background: '#ffffff',
+                              outline: 'none',
+                              boxSizing: 'border-box',
+                            }}
+                            value={row.frequency}
+                            onChange={(e) => {
+                              const newMeds = [...visitForm.medicines];
+                              newMeds[idx].frequency = e.target.value;
+                              setVisitForm({ ...visitForm, medicines: newMeds });
+                            }}
+                          >
+                            <option value="Twice daily">Twice daily</option>
+                            <option value="Once daily">Once daily</option>
+                            <option value="Thrice daily">Thrice daily</option>
+                            <option value="Four times daily">Four times daily</option>
+                            <option value="Every 8 hours">Every 8 hours</option>
+                            <option value="As needed (SOS)">As needed (SOS)</option>
+                            <option value="Once at bedtime">Once at bedtime</option>
+                          </select>
+
+                          <input
+                            type="number"
+                            min="1"
+                            max="365"
+                            style={{
+                              width: '100%',
+                              height: '42px',
+                              borderRadius: '8px',
+                              border: '1px solid #cbd5e1',
+                              padding: '0 12px',
+                              fontSize: '0.85rem',
+                              color: '#0f172a',
+                              background: '#ffffff',
+                              outline: 'none',
+                              boxSizing: 'border-box',
+                            }}
+                            placeholder="5"
+                            value={row.duration_days}
+                            onChange={(e) => {
+                              const newMeds = [...visitForm.medicines];
+                              newMeds[idx].duration_days = Number(e.target.value);
+                              setVisitForm({ ...visitForm, medicines: newMeds });
+                            }}
+                          />
+
+                          <input
+                            type="text"
+                            style={{
+                              width: '100%',
+                              height: '42px',
+                              borderRadius: '8px',
+                              border: '1px solid #cbd5e1',
+                              padding: '0 12px',
+                              fontSize: '0.85rem',
+                              color: '#0f172a',
+                              background: '#ffffff',
+                              outline: 'none',
+                              boxSizing: 'border-box',
+                            }}
+                            placeholder="After food"
+                            value={row.instructions}
+                            onChange={(e) => {
+                              const newMeds = [...visitForm.medicines];
+                              newMeds[idx].instructions = e.target.value;
+                              setVisitForm({ ...visitForm, medicines: newMeds });
+                            }}
+                          />
+
                           <button
                             type="button"
-                            className="btn btn-ghost btn-sm"
-                            style={{ color: '#ef4444', padding: '0.4rem' }}
+                            style={{
+                              width: '42px',
+                              height: '42px',
+                              borderRadius: '8px',
+                              border: '1px solid #fee2e2',
+                              background: '#ffffff',
+                              color: '#ef4444',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                              boxSizing: 'border-box',
+                            }}
                             onClick={() => {
-                              const newMeds = visitForm.medicines.filter((_, i) => i !== idx);
-                              setVisitForm({ ...visitForm, medicines: newMeds });
+                              if (visitForm.medicines.length > 1) {
+                                setVisitForm({
+                                  ...visitForm,
+                                  medicines: visitForm.medicines.filter((_, i) => i !== idx),
+                                });
+                              } else {
+                                setVisitForm({
+                                  ...visitForm,
+                                  medicines: [{ medicine_name: '', dosage: '1 tablet', frequency: 'Twice daily', duration_days: 5, instructions: 'After food' }],
+                                });
+                              }
                             }}
                           >
                             <Trash2 size={16} />
                           </button>
-                        )}
-                      </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
 
-                {/* 5. Follow-up Section with Auto Calculation */}
-                <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '1rem', borderRadius: '10px', marginBottom: '0.5rem' }}>
-                  <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#166534', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <Calendar size={16} /> Follow-Up Scheduling & Date Calculation
+                {/* 5. Follow-up Section with Auto Calculation Card */}
+                <div
+                  style={{
+                    background: '#f0fdf4',
+                    border: '1px solid #86efac',
+                    borderRadius: '14px',
+                    padding: '16px 18px',
+                    marginBottom: '20px',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#059669', fontWeight: 700, fontSize: '0.9rem' }}>
+                    <Calendar size={18} color="#059669" />
+                    <span>Follow-Up Scheduling &amp; Date Calculation</span>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-                    <div className="form-group" style={{ margin: 0 }}>
-                      <label className="form-label">Follow-up Interval (Days)</label>
+                  <div className="responsive-followup-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '14px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#0f172a', marginBottom: '6px' }}>
+                        Follow-up Interval (Days)
+                      </label>
                       <input
                         type="number"
                         min="1"
                         max="365"
-                        className="form-input"
-                        placeholder="e.g. 20"
+                        style={{
+                          width: '100%',
+                          height: '42px',
+                          borderRadius: '10px',
+                          border: '1px solid #cbd5e1',
+                          padding: '0 14px',
+                          fontSize: '0.875rem',
+                          color: '#0f172a',
+                          background: '#ffffff',
+                          outline: 'none',
+                          boxSizing: 'border-box',
+                        }}
+                        placeholder="20"
                         value={visitForm.follow_up_after_days}
                         onChange={(e) => setVisitForm({ ...visitForm, follow_up_after_days: Number(e.target.value) })}
                       />
                     </div>
 
-                    <div className="form-group" style={{ margin: 0 }}>
-                      <label className="form-label">Expected Next Visit Date (Editable override)</label>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#0f172a', marginBottom: '6px' }}>
+                        Expected Next Visit Date (Editable override)
+                      </label>
                       <input
                         type="date"
-                        className="form-input"
+                        style={{
+                          width: '100%',
+                          height: '42px',
+                          borderRadius: '10px',
+                          border: '1px solid #cbd5e1',
+                          padding: '0 14px',
+                          fontSize: '0.875rem',
+                          color: '#0f172a',
+                          background: '#ffffff',
+                          outline: 'none',
+                          boxSizing: 'border-box',
+                        }}
                         value={visitForm.next_visit_date}
                         onChange={(e) => setVisitForm({ ...visitForm, next_visit_date: e.target.value })}
                       />
                     </div>
                   </div>
 
-                  <div style={{ marginTop: '0.75rem' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', fontWeight: 600, color: '#166534', cursor: 'pointer' }}>
-                      <input
-                        type="checkbox"
-                        checked={visitForm.create_reminder}
-                        onChange={(e) => setVisitForm({ ...visitForm, create_reminder: e.target.checked })}
-                      />
-                      Auto-schedule WhatsApp reminder for the morning of this follow-up date
-                    </label>
-                  </div>
+                  <label
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      marginTop: '14px',
+                      fontSize: '0.84rem',
+                      fontWeight: 700,
+                      color: '#059669',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={visitForm.create_reminder}
+                      onChange={(e) => setVisitForm({ ...visitForm, create_reminder: e.target.checked })}
+                      style={{
+                        width: '18px',
+                        height: '18px',
+                        accentColor: '#2563eb',
+                        cursor: 'pointer',
+                        borderRadius: '4px',
+                      }}
+                    />
+                    Auto-schedule WhatsApp reminder for the morning of this follow-up date
+                  </label>
                 </div>
               </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={() => setShowAddVisitModal(false)}>
+
+              {/* Footer */}
+              <div
+                style={{
+                  flexShrink: 0,
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                  gap: '12px',
+                  padding: '16px 24px',
+                  borderTop: '1px solid #f1f5f9',
+                  background: '#ffffff',
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => setShowAddVisitModal(false)}
+                  style={{
+                    background: '#ffffff',
+                    border: '1px solid #cbd5e1',
+                    borderRadius: '10px',
+                    padding: '10px 24px',
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    color: '#334155',
+                    cursor: 'pointer',
+                  }}
+                >
                   Cancel
                 </button>
-                <button type="submit" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <CheckCircle size={16} /> Save Clinical Visit (1-Click)
+                <button
+                  type="submit"
+                  style={{
+                    background: '#2563eb',
+                    border: 'none',
+                    borderRadius: '10px',
+                    padding: '10px 24px',
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    color: '#ffffff',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(37,99,235,0.25)',
+                  }}
+                >
+                  <CheckCircle size={18} /> Save Clinical Visit (1-Click)
                 </button>
               </div>
             </form>
@@ -1245,38 +1958,155 @@ export const PatientDetailView: React.FC<PatientDetailViewProps> = ({ patientId,
 
       {/* Edit Clinical Visit Modal */}
       {showEditVisitModal && (
-        <div className="modal-overlay">
-          <div className="modal-content modal-content-lg" style={{ maxWidth: '900px' }}>
-            <div className="modal-header">
-              <div>
-                <h3 style={{ fontSize: '1.15rem', margin: 0 }}>Edit Clinical Visit #{editingVisitId}</h3>
-                <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>
-                  Patient: <strong style={{ color: 'var(--color-primary)' }}>{patient.patient_name}</strong> • Patient ID: #{patient.patient_id}
+        <div
+          className="modal-overlay"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+            backdropFilter: 'blur(4px)',
+            background: 'rgba(15, 23, 42, 0.45)',
+            zIndex: 1100,
+          }}
+        >
+          <div
+            className="modal-content"
+            style={{
+              maxWidth: '920px',
+              width: '100%',
+              maxHeight: 'calc(100vh - 40px)',
+              height: 'auto',
+              borderRadius: '20px',
+              padding: 0,
+              boxShadow: '0 25px 50px -12px rgba(15, 23, 42, 0.25)',
+              display: 'flex',
+              flexDirection: 'column',
+              overflow: 'hidden',
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
+            }}
+          >
+            {/* Modal Header */}
+            <div
+              style={{
+                flexShrink: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '20px 24px 16px',
+                borderBottom: '1px solid #f1f5f9',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <div
+                  style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '12px',
+                    background: '#eff6ff',
+                    border: '1px solid #dbeafe',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#2563eb',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Calendar size={22} />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.01em' }}>
+                    Edit Clinical Visit #{editingVisitId}
+                  </h3>
+                  <div style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '2px' }}>
+                    Patient: <span style={{ color: '#2563eb', fontWeight: 700 }}>{patient.patient_name}</span> • Patient ID: <span style={{ color: '#475569', fontWeight: 600 }}>#{patient.patient_id}</span>
+                  </div>
                 </div>
               </div>
-              <button className="btn btn-ghost btn-sm" onClick={() => setShowEditVisitModal(false)}>
-                <X size={18} />
+              <button
+                type="button"
+                onClick={() => setShowEditVisitModal(false)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '6px',
+                  borderRadius: '8px',
+                  color: '#64748b',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <X size={20} />
               </button>
             </div>
-            <form onSubmit={handleUpdateVisit}>
-              <div className="modal-body" style={{ maxHeight: '76vh', overflowY: 'auto' }}>
+
+            <form
+              onSubmit={handleUpdateVisit}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flex: 1,
+                minHeight: 0,
+                overflow: 'hidden',
+                margin: 0,
+              }}
+            >
+              <div
+                style={{
+                  flex: 1,
+                  minHeight: 0,
+                  overflowY: 'auto',
+                  padding: '20px 24px',
+                }}
+              >
                 {/* 1. Visit Encounter Details */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1.25rem' }}>
-                  <div className="form-group" style={{ margin: 0 }}>
-                    <label className="form-label">Visit Date *</label>
+                <div className="responsive-encounter-grid" style={{ display: 'grid', gap: '14px', marginBottom: '18px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#0f172a', marginBottom: '6px' }}>
+                      Visit Date <span style={{ color: '#ef4444' }}>*</span>
+                    </label>
                     <input
                       type="date"
                       required
-                      className="form-input"
+                      style={{
+                        width: '100%',
+                        height: '42px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        padding: '0 12px',
+                        fontSize: '0.875rem',
+                        background: '#ffffff',
+                        color: '#0f172a',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                      }}
                       value={editVisitForm.visit_date}
                       onChange={(e) => setEditVisitForm({ ...editVisitForm, visit_date: e.target.value })}
                     />
                   </div>
 
-                  <div className="form-group" style={{ margin: 0 }}>
-                    <label className="form-label">Visit Type</label>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#0f172a', marginBottom: '6px' }}>
+                      Visit Type
+                    </label>
                     <select
-                      className="form-select"
+                      style={{
+                        width: '100%',
+                        height: '42px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        padding: '0 12px',
+                        fontSize: '0.875rem',
+                        background: '#ffffff',
+                        color: '#0f172a',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                      }}
                       value={editVisitForm.visit_type}
                       onChange={(e) => setEditVisitForm({ ...editVisitForm, visit_type: e.target.value })}
                     >
@@ -1287,10 +2117,23 @@ export const PatientDetailView: React.FC<PatientDetailViewProps> = ({ patientId,
                     </select>
                   </div>
 
-                  <div className="form-group" style={{ margin: 0 }}>
-                    <label className="form-label">Visit Status</label>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#0f172a', marginBottom: '6px' }}>
+                      Visit Status
+                    </label>
                     <select
-                      className="form-select"
+                      style={{
+                        width: '100%',
+                        height: '42px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        padding: '0 12px',
+                        fontSize: '0.875rem',
+                        background: '#ffffff',
+                        color: '#0f172a',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                      }}
                       value={editVisitForm.visit_status}
                       onChange={(e) => setEditVisitForm({ ...editVisitForm, visit_status: e.target.value })}
                     >
@@ -1300,10 +2143,23 @@ export const PatientDetailView: React.FC<PatientDetailViewProps> = ({ patientId,
                     </select>
                   </div>
 
-                  <div className="form-group" style={{ margin: 0 }}>
-                    <label className="form-label">Attending Doctor</label>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#0f172a', marginBottom: '6px' }}>
+                      Attending Doctor
+                    </label>
                     <select
-                      className="form-select"
+                      style={{
+                        width: '100%',
+                        height: '42px',
+                        borderRadius: '10px',
+                        border: '1px solid #cbd5e1',
+                        padding: '0 12px',
+                        fontSize: '0.875rem',
+                        background: '#ffffff',
+                        color: '#0f172a',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                      }}
                       value={editVisitForm.doctor_id || ''}
                       onChange={(e) => setEditVisitForm({ ...editVisitForm, doctor_id: e.target.value ? Number(e.target.value) : null })}
                     >
@@ -1317,75 +2173,153 @@ export const PatientDetailView: React.FC<PatientDetailViewProps> = ({ patientId,
                   </div>
                 </div>
 
-                {/* 2. Integrated Diagnosis / Disease Section */}
-                <div style={{ background: '#f8fafc', border: '1px solid var(--color-border)', borderRadius: '10px', padding: '1rem', marginBottom: '1.25rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                    <label className="form-label" style={{ fontWeight: 700, margin: 0, display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#0369a1' }}>
-                      <ShieldAlert size={16} /> Patient Diagnosis / Conditions
-                    </label>
+                {/* 2. Patient Diagnosis / Conditions Card */}
+                <div
+                  style={{
+                    border: '1px solid #bfdbfe',
+                    borderRadius: '14px',
+                    background: '#ffffff',
+                    padding: '16px 18px',
+                    marginBottom: '16px',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#2563eb', fontWeight: 700, fontSize: '0.9rem' }}>
+                    <Stethoscope size={18} />
+                    <span>Patient Diagnosis / Conditions</span>
                   </div>
 
-                  {/* Existing Active Patient Conditions */}
-                  {patient.patient_diseases.length > 0 && (
-                    <div style={{ marginBottom: '0.75rem', display: 'flex', gap: '0.4rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Known History:</span>
-                      {patient.patient_diseases.map((pd) => (
-                        <span key={pd.patient_disease_id} className="badge badge-neutral" style={{ fontSize: '0.75rem' }}>
-                          ✓ {pd.disease?.disease_name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                  {/* Known History line */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: '0.82rem', color: '#64748b', fontWeight: 500 }}>Known History:</span>
+                    {patient.patient_diseases.length === 0 && editVisitForm.new_disease_names.length === 0 && editVisitForm.selected_disease_ids.length === 0 ? (
+                      <span style={{ fontSize: '0.8rem', color: '#94a3b8', fontStyle: 'italic' }}>None recorded</span>
+                    ) : (
+                      <>
+                        {patient.patient_diseases.map((pd) => (
+                          <span
+                            key={pd.patient_disease_id}
+                            style={{
+                              background: '#f8fafc',
+                              border: '1px solid #cbd5e1',
+                              borderRadius: '999px',
+                              padding: '3px 10px',
+                              fontSize: '0.8rem',
+                              fontWeight: 600,
+                              color: '#334155',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                            }}
+                          >
+                            <span>✓</span> {pd.disease?.disease_name}
+                          </span>
+                        ))}
+                        {editVisitForm.selected_disease_ids.map((id) => {
+                          const d = diseasesCatalog.find((x) => x.disease_id === id);
+                          if (!d) return null;
+                          return (
+                            <span
+                              key={id}
+                              style={{
+                                background: '#eff6ff',
+                                border: '1px solid #bfdbfe',
+                                borderRadius: '999px',
+                                padding: '3px 10px',
+                                fontSize: '0.8rem',
+                                fontWeight: 600,
+                                color: '#2563eb',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                              }}
+                            >
+                              <span>✓</span> {d.disease_name}
+                              <X
+                                size={13}
+                                style={{ cursor: 'pointer', color: '#2563eb' }}
+                                onClick={() =>
+                                  setEditVisitForm((prev) => ({
+                                    ...prev,
+                                    selected_disease_ids: prev.selected_disease_ids.filter((x) => x !== id),
+                                  }))
+                                }
+                              />
+                            </span>
+                          );
+                        })}
+                        {editVisitForm.new_disease_names.map((name, i) => (
+                          <span
+                            key={i}
+                            style={{
+                              background: '#eff6ff',
+                              border: '1px solid #bfdbfe',
+                              borderRadius: '999px',
+                              padding: '3px 10px',
+                              fontSize: '0.8rem',
+                              fontWeight: 600,
+                              color: '#2563eb',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                            }}
+                          >
+                            <span>✓</span> {name}
+                            <X
+                              size={13}
+                              style={{ cursor: 'pointer', color: '#2563eb' }}
+                              onClick={() =>
+                                setEditVisitForm((prev) => ({
+                                  ...prev,
+                                  new_disease_names: prev.new_disease_names.filter((_, idx) => idx !== i),
+                                }))
+                              }
+                            />
+                          </span>
+                        ))}
+                      </>
+                    )}
+                  </div>
 
-                  {/* Quick Select from Diseases Catalog */}
-                  <div style={{ marginBottom: '0.75rem' }}>
-                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: '0.35rem' }}>
+                  {/* Quick Add Common Condition Input */}
+                  <div style={{ marginTop: '12px' }}>
+                    <div style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600, marginBottom: '6px' }}>
                       Add Condition to Record:
                     </div>
-                    <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', maxHeight: '110px', overflowY: 'auto' }}>
-                      {diseasesCatalog.map((d) => {
-                        const isSelected = editVisitForm.selected_disease_ids.includes(d.disease_id);
-                        const alreadyHas = patient.patient_diseases.some((pd) => pd.disease_id === d.disease_id);
-                        if (alreadyHas) return null;
-                        return (
-                          <button
-                            type="button"
-                            key={d.disease_id}
-                            onClick={() => {
-                              if (isSelected) {
-                                setEditVisitForm((prev) => ({
-                                  ...prev,
-                                  selected_disease_ids: prev.selected_disease_ids.filter((id) => id !== d.disease_id),
-                                }));
-                              } else {
-                                setEditVisitForm((prev) => ({
-                                  ...prev,
-                                  selected_disease_ids: [...prev.selected_disease_ids, d.disease_id],
-                                }));
-                              }
-                            }}
-                            className={`btn btn-sm ${isSelected ? 'btn-primary' : 'btn-secondary'}`}
-                            style={{ fontSize: '0.75rem', padding: '0.2rem 0.55rem' }}
-                          >
-                            {isSelected ? '✓ ' : '+ '} {d.disease_name}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Doctor can write diagnosis manually */}
-                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                    <input
-                      type="text"
-                      className="form-input"
-                      style={{ fontSize: '0.82rem', padding: '0.45rem 0.75rem' }}
-                      placeholder="Type custom diagnosis manually (e.g. Acute Bronchitis, Viral Fever, Gastritis)..."
-                      value={editVisitForm.new_disease_input}
-                      onChange={(e) => setEditVisitForm({ ...editVisitForm, new_disease_input: e.target.value })}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault();
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                      <input
+                        type="text"
+                        style={{
+                          flex: 1,
+                          height: '42px',
+                          border: '1px solid #cbd5e1',
+                          borderRadius: '8px',
+                          padding: '0 14px',
+                          fontSize: '0.85rem',
+                          color: '#0f172a',
+                          background: '#ffffff',
+                          outline: 'none',
+                          boxSizing: 'border-box',
+                        }}
+                        placeholder="Type custom diagnosis manually (e.g. Acute Bronchitis, Viral Fever, Gastritis)..."
+                        value={editVisitForm.new_disease_input}
+                        onChange={(e) => setEditVisitForm({ ...editVisitForm, new_disease_input: e.target.value })}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const val = editVisitForm.new_disease_input.trim();
+                            if (val && !editVisitForm.new_disease_names.includes(val)) {
+                              setEditVisitForm((prev) => ({
+                                ...prev,
+                                new_disease_names: [...prev.new_disease_names, val],
+                                new_disease_input: '',
+                              }));
+                            }
+                          }
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
                           const val = editVisitForm.new_disease_input.trim();
                           if (val && !editVisitForm.new_disease_names.includes(val)) {
                             setEditVisitForm((prev) => ({
@@ -1394,75 +2328,92 @@ export const PatientDetailView: React.FC<PatientDetailViewProps> = ({ patientId,
                               new_disease_input: '',
                             }));
                           }
-                        }
-                      }}
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-secondary btn-sm"
-                      onClick={() => {
-                        const val = editVisitForm.new_disease_input.trim();
-                        if (val && !editVisitForm.new_disease_names.includes(val)) {
-                          setEditVisitForm((prev) => ({
-                            ...prev,
-                            new_disease_names: [...prev.new_disease_names, val],
-                            new_disease_input: '',
-                          }));
-                        }
-                      }}
-                    >
-                      + Add
-                    </button>
-                  </div>
-
-                  {/* Typed Diagnosis Badges */}
-                  {editVisitForm.new_disease_names.length > 0 && (
-                    <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
-                      {editVisitForm.new_disease_names.map((name, i) => (
-                        <span key={i} className="badge badge-info" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
-                          {name}
-                          <X
-                            size={12}
-                            style={{ cursor: 'pointer' }}
-                            onClick={() =>
-                              setEditVisitForm((prev) => ({
-                                ...prev,
-                                new_disease_names: prev.new_disease_names.filter((_, idx) => idx !== i),
-                              }))
-                            }
-                          />
-                        </span>
-                      ))}
+                        }}
+                        style={{
+                          height: '42px',
+                          padding: '0 18px',
+                          borderRadius: '8px',
+                          border: '1px solid #cbd5e1',
+                          background: '#ffffff',
+                          color: '#2563eb',
+                          fontWeight: 700,
+                          fontSize: '0.85rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          cursor: 'pointer',
+                          boxSizing: 'border-box',
+                          flexShrink: 0,
+                        }}
+                      >
+                        <Plus size={16} /> Add
+                      </button>
                     </div>
-                  )}
+                  </div>
                 </div>
 
-                {/* 3. Doctor Notes & Observations */}
-                <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-                  <label className="form-label" style={{ fontWeight: 600 }}>Doctor Notes & Clinical Observations</label>
+                {/* 3. Doctor Notes & Observations Card */}
+                <div
+                  style={{
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '14px',
+                    background: '#ffffff',
+                    padding: '16px 18px',
+                    marginBottom: '16px',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#0f172a', fontWeight: 700, fontSize: '0.9rem' }}>
+                    <FileText size={18} color="#2563eb" />
+                    <span>Doctor Notes &amp; Clinical Observations</span>
+                  </div>
                   <textarea
-                    rows={2}
-                    className="form-textarea"
+                    rows={3}
+                    maxLength={1000}
+                    style={{
+                      width: '100%',
+                      minHeight: '80px',
+                      border: '1px solid #cbd5e1',
+                      borderRadius: '10px',
+                      padding: '12px 14px',
+                      fontSize: '0.875rem',
+                      color: '#334155',
+                      marginTop: '10px',
+                      outline: 'none',
+                      resize: 'vertical',
+                      boxSizing: 'border-box',
+                      fontFamily: 'inherit',
+                    }}
                     placeholder="Clinical findings, symptoms, examination notes, lab investigations requested..."
                     value={editVisitForm.doctor_notes}
                     onChange={(e) => setEditVisitForm({ ...editVisitForm, doctor_notes: e.target.value })}
                   />
+                  <div style={{ textAlign: 'right', fontSize: '0.75rem', color: '#94a3b8', marginTop: '4px' }}>
+                    {(editVisitForm.doctor_notes || '').length}/1000
+                  </div>
                 </div>
 
-                {/* 4. Prescribed Medicines (Manual Writing with Auto-Suggest) */}
-                <div style={{ background: '#ffffff', border: '1px solid var(--color-border)', borderRadius: '10px', padding: '1rem', marginBottom: '1.25rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                {/* 4. Prescribe Medicines Card */}
+                <div
+                  style={{
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '14px',
+                    background: '#ffffff',
+                    padding: '16px 18px',
+                    marginBottom: '16px',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
                     <div>
-                      <label className="form-label" style={{ margin: 0, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#0f172a' }}>
-                        <Pill size={16} style={{ color: 'var(--color-primary)' }} /> Prescribed Medicines (Edit or Add)
-                      </label>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#0f172a', fontWeight: 700, fontSize: '0.9rem' }}>
+                        <Pill size={18} color="#2563eb" />
+                        <span>Prescribed Medicines (Edit or Add)</span>
+                      </div>
+                      <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '2px' }}>
                         Update medicines, dosage, and schedules for this clinical visit.
                       </div>
                     </div>
                     <button
                       type="button"
-                      className="btn btn-secondary btn-sm"
                       onClick={() => {
                         setEditVisitForm({
                           ...editVisitForm,
@@ -1472,142 +2423,278 @@ export const PatientDetailView: React.FC<PatientDetailViewProps> = ({ patientId,
                           ],
                         });
                       }}
+                      style={{
+                        background: '#ffffff',
+                        border: '1px solid #bfdbfe',
+                        borderRadius: '8px',
+                        padding: '8px 16px',
+                        color: '#2563eb',
+                        fontWeight: 700,
+                        fontSize: '0.82rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                        flexShrink: 0,
+                      }}
                     >
-                      <Plus size={14} /> Add Medicine Line
+                      <Plus size={15} /> Add Medicine Line
                     </button>
                   </div>
 
-                  {editVisitForm.medicines.map((row, idx) => (
-                    <div
-                      key={idx}
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: '2.5fr 1.2fr 1.2fr 1fr 1.5fr auto',
-                        gap: '0.5rem',
-                        alignItems: 'center',
-                        marginBottom: '0.5rem',
-                        padding: '0.4rem',
-                        borderRadius: '6px',
-                        background: '#f8fafc',
-                      }}
-                    >
-                      <div>
-                        <input
-                          type="text"
-                          list="medicines-suggestions-list"
-                          className="form-input"
-                          style={{ fontSize: '0.82rem', padding: '0.4rem 0.6rem' }}
-                          placeholder="Medicine name (e.g. Paracetamol 650mg)"
-                          value={row.medicine_name}
-                          onChange={(e) => {
-                            const newMeds = [...editVisitForm.medicines];
-                            newMeds[idx].medicine_name = e.target.value;
-                            setEditVisitForm({ ...editVisitForm, medicines: newMeds });
-                          }}
-                        />
+                  {/* Column labels header and rows wrapped in touch scroll container */}
+                  <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', margin: '0 -4px' }}>
+                    <div style={{ minWidth: '600px', padding: '0 4px' }}>
+                      <div
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: '2.4fr 1.2fr 1.4fr 0.9fr 1.5fr 42px',
+                          gap: '10px',
+                          marginBottom: '6px',
+                          padding: '0 2px',
+                        }}
+                      >
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569' }}>Medicine Name</span>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569' }}>Dosage</span>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569' }}>Frequency</span>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569' }}>Duration</span>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569' }}>Instructions</span>
+                        <span></span>
                       </div>
-                      <div>
-                        <input
-                          type="text"
-                          className="form-input"
-                          style={{ fontSize: '0.82rem', padding: '0.4rem 0.6rem' }}
-                          placeholder="Dosage (500mg)"
-                          value={row.dosage}
-                          onChange={(e) => {
-                            const newMeds = [...editVisitForm.medicines];
-                            newMeds[idx].dosage = e.target.value;
-                            setEditVisitForm({ ...editVisitForm, medicines: newMeds });
+
+                      {/* Medicines Rows */}
+                      {editVisitForm.medicines.map((row, idx) => (
+                        <div
+                          key={idx}
+                          style={{
+                            display: 'grid',
+                            gridTemplateColumns: '2.4fr 1.2fr 1.4fr 0.9fr 1.5fr 42px',
+                            gap: '10px',
+                            alignItems: 'center',
+                            marginBottom: '10px',
                           }}
-                        />
-                      </div>
-                      <div>
-                        <input
-                          type="text"
-                          className="form-input"
-                          style={{ fontSize: '0.82rem', padding: '0.4rem 0.6rem' }}
-                          placeholder="Freq (Twice daily)"
-                          value={row.frequency}
-                          onChange={(e) => {
-                            const newMeds = [...editVisitForm.medicines];
-                            newMeds[idx].frequency = e.target.value;
-                            setEditVisitForm({ ...editVisitForm, medicines: newMeds });
-                          }}
-                        />
-                      </div>
-                      <div>
-                        <input
-                          type="number"
-                          min="1"
-                          max="365"
-                          className="form-input"
-                          style={{ fontSize: '0.82rem', padding: '0.4rem 0.6rem' }}
-                          placeholder="Days"
-                          value={row.duration_days}
-                          onChange={(e) => {
-                            const newMeds = [...editVisitForm.medicines];
-                            newMeds[idx].duration_days = Number(e.target.value);
-                            setEditVisitForm({ ...editVisitForm, medicines: newMeds });
-                          }}
-                        />
-                      </div>
-                      <div>
-                        <input
-                          type="text"
-                          className="form-input"
-                          style={{ fontSize: '0.82rem', padding: '0.4rem 0.6rem' }}
-                          placeholder="Instructions (After food)"
-                          value={row.instructions}
-                          onChange={(e) => {
-                            const newMeds = [...editVisitForm.medicines];
-                            newMeds[idx].instructions = e.target.value;
-                            setEditVisitForm({ ...editVisitForm, medicines: newMeds });
-                          }}
-                        />
-                      </div>
-                      <div>
-                        {editVisitForm.medicines.length > 1 && (
+                        >
+                          <input
+                            type="text"
+                            list="medicines-suggestions-list"
+                            style={{
+                              width: '100%',
+                              height: '42px',
+                              borderRadius: '8px',
+                              border: '1px solid #cbd5e1',
+                              padding: '0 12px',
+                              fontSize: '0.85rem',
+                              color: '#0f172a',
+                              background: '#ffffff',
+                              outline: 'none',
+                              boxSizing: 'border-box',
+                            }}
+                            placeholder="e.g. Paracetamol 6"
+                            value={row.medicine_name}
+                            onChange={(e) => {
+                              const newMeds = [...editVisitForm.medicines];
+                              newMeds[idx].medicine_name = e.target.value;
+                              setEditVisitForm({ ...editVisitForm, medicines: newMeds });
+                            }}
+                          />
+
+                          <input
+                            type="text"
+                            style={{
+                              width: '100%',
+                              height: '42px',
+                              borderRadius: '8px',
+                              border: '1px solid #cbd5e1',
+                              padding: '0 12px',
+                              fontSize: '0.85rem',
+                              color: '#0f172a',
+                              background: '#ffffff',
+                              outline: 'none',
+                              boxSizing: 'border-box',
+                            }}
+                            placeholder="1 tablet"
+                            value={row.dosage}
+                            onChange={(e) => {
+                              const newMeds = [...editVisitForm.medicines];
+                              newMeds[idx].dosage = e.target.value;
+                              setEditVisitForm({ ...editVisitForm, medicines: newMeds });
+                            }}
+                          />
+
+                          <select
+                            style={{
+                              width: '100%',
+                              height: '42px',
+                              borderRadius: '8px',
+                              border: '1px solid #cbd5e1',
+                              padding: '0 10px',
+                              fontSize: '0.85rem',
+                              color: '#0f172a',
+                              background: '#ffffff',
+                              outline: 'none',
+                              boxSizing: 'border-box',
+                            }}
+                            value={row.frequency}
+                            onChange={(e) => {
+                              const newMeds = [...editVisitForm.medicines];
+                              newMeds[idx].frequency = e.target.value;
+                              setEditVisitForm({ ...editVisitForm, medicines: newMeds });
+                            }}
+                          >
+                            <option value="Twice daily">Twice daily</option>
+                            <option value="Once daily">Once daily</option>
+                            <option value="Thrice daily">Thrice daily</option>
+                            <option value="Four times daily">Four times daily</option>
+                            <option value="Every 8 hours">Every 8 hours</option>
+                            <option value="As needed (SOS)">As needed (SOS)</option>
+                            <option value="Once at bedtime">Once at bedtime</option>
+                          </select>
+
+                          <input
+                            type="number"
+                            min="1"
+                            max="365"
+                            style={{
+                              width: '100%',
+                              height: '42px',
+                              borderRadius: '8px',
+                              border: '1px solid #cbd5e1',
+                              padding: '0 12px',
+                              fontSize: '0.85rem',
+                              color: '#0f172a',
+                              background: '#ffffff',
+                              outline: 'none',
+                              boxSizing: 'border-box',
+                            }}
+                            placeholder="5"
+                            value={row.duration_days}
+                            onChange={(e) => {
+                              const newMeds = [...editVisitForm.medicines];
+                              newMeds[idx].duration_days = Number(e.target.value);
+                              setEditVisitForm({ ...editVisitForm, medicines: newMeds });
+                            }}
+                          />
+
+                          <input
+                            type="text"
+                            style={{
+                              width: '100%',
+                              height: '42px',
+                              borderRadius: '8px',
+                              border: '1px solid #cbd5e1',
+                              padding: '0 12px',
+                              fontSize: '0.85rem',
+                              color: '#0f172a',
+                              background: '#ffffff',
+                              outline: 'none',
+                              boxSizing: 'border-box',
+                            }}
+                            placeholder="After food"
+                            value={row.instructions}
+                            onChange={(e) => {
+                              const newMeds = [...editVisitForm.medicines];
+                              newMeds[idx].instructions = e.target.value;
+                              setEditVisitForm({ ...editVisitForm, medicines: newMeds });
+                            }}
+                          />
+
                           <button
                             type="button"
-                            className="btn btn-ghost btn-sm"
-                            style={{ color: '#ef4444', padding: '0.4rem' }}
+                            style={{
+                              width: '42px',
+                              height: '42px',
+                              borderRadius: '8px',
+                              border: '1px solid #fee2e2',
+                              background: '#ffffff',
+                              color: '#ef4444',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                              boxSizing: 'border-box',
+                            }}
                             onClick={() => {
-                              const newMeds = editVisitForm.medicines.filter((_, i) => i !== idx);
-                              setEditVisitForm({ ...editVisitForm, medicines: newMeds });
+                              if (editVisitForm.medicines.length > 1) {
+                                setEditVisitForm({
+                                  ...editVisitForm,
+                                  medicines: editVisitForm.medicines.filter((_, i) => i !== idx),
+                                });
+                              } else {
+                                setEditVisitForm({
+                                  ...editVisitForm,
+                                  medicines: [{ medicine_name: '', dosage: '1 tablet', frequency: 'Twice daily', duration_days: 5, instructions: 'After food' }],
+                                });
+                              }
                             }}
                           >
                             <Trash2 size={16} />
                           </button>
-                        )}
-                      </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
 
-                {/* 5. Follow-up Section with Auto Calculation */}
-                <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '1rem', borderRadius: '10px', marginBottom: '0.5rem' }}>
-                  <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#166534', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <Calendar size={16} /> Follow-Up Scheduling & Date Calculation
+                {/* 5. Follow-up Section with Auto Calculation Card */}
+                <div
+                  style={{
+                    background: '#f0fdf4',
+                    border: '1px solid #86efac',
+                    borderRadius: '14px',
+                    padding: '16px 18px',
+                    marginBottom: '20px',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#059669', fontWeight: 700, fontSize: '0.9rem' }}>
+                    <Calendar size={18} color="#059669" />
+                    <span>Follow-Up Scheduling &amp; Date Calculation</span>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-                    <div className="form-group" style={{ margin: 0 }}>
-                      <label className="form-label">Follow-up Interval (Days)</label>
+                  <div className="responsive-followup-grid" style={{ display: 'grid', gap: '16px', marginTop: '14px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#0f172a', marginBottom: '6px' }}>
+                        Follow-up Interval (Days)
+                      </label>
                       <input
                         type="number"
                         min="1"
                         max="365"
-                        className="form-input"
-                        placeholder="e.g. 20"
+                        style={{
+                          width: '100%',
+                          height: '42px',
+                          borderRadius: '10px',
+                          border: '1px solid #cbd5e1',
+                          padding: '0 14px',
+                          fontSize: '0.875rem',
+                          color: '#0f172a',
+                          background: '#ffffff',
+                          outline: 'none',
+                          boxSizing: 'border-box',
+                        }}
+                        placeholder="20"
                         value={editVisitForm.follow_up_after_days}
                         onChange={(e) => setEditVisitForm({ ...editVisitForm, follow_up_after_days: Number(e.target.value) })}
                       />
                     </div>
 
-                    <div className="form-group" style={{ margin: 0 }}>
-                      <label className="form-label">Expected Next Visit Date (Editable override)</label>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#0f172a', marginBottom: '6px' }}>
+                        Expected Next Visit Date (Editable override)
+                      </label>
                       <input
                         type="date"
-                        className="form-input"
+                        style={{
+                          width: '100%',
+                          height: '42px',
+                          borderRadius: '10px',
+                          border: '1px solid #cbd5e1',
+                          padding: '0 14px',
+                          fontSize: '0.875rem',
+                          color: '#0f172a',
+                          background: '#ffffff',
+                          outline: 'none',
+                          boxSizing: 'border-box',
+                        }}
                         value={editVisitForm.next_visit_date}
                         onChange={(e) => setEditVisitForm({ ...editVisitForm, next_visit_date: e.target.value })}
                       />
@@ -1615,12 +2702,54 @@ export const PatientDetailView: React.FC<PatientDetailViewProps> = ({ patientId,
                   </div>
                 </div>
               </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={() => setShowEditVisitModal(false)}>
+
+              {/* Footer */}
+              <div
+                style={{
+                  flexShrink: 0,
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                  gap: '12px',
+                  padding: '16px 24px',
+                  borderTop: '1px solid #f1f5f9',
+                  background: '#ffffff',
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => setShowEditVisitModal(false)}
+                  style={{
+                    background: '#ffffff',
+                    border: '1px solid #cbd5e1',
+                    borderRadius: '10px',
+                    padding: '10px 24px',
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    color: '#334155',
+                    cursor: 'pointer',
+                  }}
+                >
                   Cancel
                 </button>
-                <button type="submit" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <CheckCircle size={16} /> Save Changes
+                <button
+                  type="submit"
+                  style={{
+                    background: '#2563eb',
+                    border: 'none',
+                    borderRadius: '10px',
+                    padding: '10px 24px',
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    color: '#ffffff',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(37,99,235,0.25)',
+                  }}
+                >
+                  <CheckCircle size={18} /> Save Changes
                 </button>
               </div>
             </form>

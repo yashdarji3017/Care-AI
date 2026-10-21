@@ -211,6 +211,7 @@ h1, h2, h3, h4, h5, h6 {
 .table-container {
   width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
   background: #ffffff;
@@ -386,4 +387,196 @@ h1, h2, h3, h4, h5, h6 {
 .tab-btn.active {
   color: var(--color-primary);
   border-bottom-color: var(--color-primary);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================
+   RESPONSIVE DESIGN SYSTEM (Mobile, Tablet, Laptop)
+   ============================================================ */
+
+/* Main layout responsive container */
+.main-content-container {
+  flex: 1;
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem 3rem;
+  box-sizing: border-box;
+}
+
+/* Tables Touch Support */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: #ffffff;
+}
+
+.data-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+/* Navigation Responsive Helpers */
+@media (max-width: 1024px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-nav-toggle {
+    display: flex !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  .desktop-nav {
+    display: flex !important;
+  }
+  .mobile-nav-toggle {
+    display: none !important;
+  }
+  .mobile-nav-drawer {
+    display: none !important;
+  }
+}
+
+/* Tablet Breakpoint (<= 1024px) */
+@media (max-width: 1024px) {
+  .main-content-container {
+    padding: 1.25rem 1rem 2.5rem;
+  }
+
+  .responsive-encounter-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* Mobile & Small Tablet Breakpoint (<= 768px) */
+@media (max-width: 768px) {
+  .main-content-container {
+    padding: 0.85rem 0.65rem 2rem;
+  }
+
+  /* Headings */
+  h1 {
+    font-size: 1.35rem !important;
+  }
+
+  h2 {
+    font-size: 1.15rem !important;
+  }
+
+  h3 {
+    font-size: 1rem !important;
+  }
+
+  /* Modal Dialog Responsive */
+  .modal-overlay {
+    padding: 10px !important;
+  }
+
+  .modal-content {
+    max-height: calc(100vh - 20px) !important;
+    border-radius: 16px !important;
+    width: 100% !important;
+  }
+
+  .modal-header {
+    padding: 14px 16px !important;
+  }
+
+  .modal-body {
+    padding: 14px 16px !important;
+  }
+
+  .modal-footer {
+    padding: 12px 16px !important;
+    gap: 8px !important;
+  }
+
+  /* Responsive Grids */
+  .responsive-encounter-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .responsive-followup-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .responsive-profile-metrics {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.85rem !important;
+    padding: 1rem !important;
+  }
+
+  .responsive-metric-divider {
+    display: none !important;
+  }
+
+  /* Filter bars */
+  .filter-bar-responsive {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+
+  /* Tables & Headers */
+  .data-table {
+    min-width: 650px;
+  }
+
+  .card-header {
+    flex-wrap: wrap !important;
+    gap: 0.6rem !important;
+  }
+
+  /* Reminders cards toggle */
+  .reminders-desktop-table {
+    display: none !important;
+  }
+
+  .reminders-mobile-cards {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .reminders-mobile-cards {
+    display: none !important;
+  }
+}
+
+/* Extra Small Phones (<= 480px) */
+@media (max-width: 480px) {
+  .btn {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.82rem;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modal-footer button {
+    width: 100%;
+    justify-content: center;
+  }
 }

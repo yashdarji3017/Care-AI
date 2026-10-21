@@ -25,23 +25,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setUser(me);
         } catch {
           api.setToken(null);
-          // Try auto-login demo admin if available
-          await tryDefaultLogin();
+          setUser(null);
         }
       } else {
-        await tryDefaultLogin();
+        setUser(null);
       }
       setLoading(false);
-    };
-
-    const tryDefaultLogin = async () => {
-      try {
-        const res = await api.login('admin', 'Admin@123');
-        api.setToken(res.access_token);
-        setUser(res.user);
-      } catch {
-        // Backend might still be starting or empty
-      }
     };
 
     initAuth();

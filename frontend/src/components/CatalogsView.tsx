@@ -117,7 +117,7 @@ export const CatalogsView: React.FC = () => {
 
       {/* Toggle and Search */}
       <div className="card" style={{ padding: '1rem', display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
           <button
             className={`btn ${activeCatalog === 'diseases' ? 'btn-primary' : 'btn-secondary'}`}
             onClick={() => setActiveCatalog('diseases')}

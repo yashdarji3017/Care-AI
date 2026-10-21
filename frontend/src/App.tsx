@@ -9,6 +9,7 @@ import { VisitsView } from './components/VisitsView';
 import { RemindersView } from './components/RemindersView';
 import { CatalogsView } from './components/CatalogsView';
 import { ReportsView } from './components/ReportsView';
+import { LoginView } from './components/LoginView';
 
 const MainLayout: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('dashboard');
@@ -41,7 +42,7 @@ const MainLayout: React.FC = () => {
         }}
       />
 
-      <main style={{ flex: 1, maxWidth: '1440px', width: '100%', margin: '0 auto', padding: '1.75rem 1.5rem 3rem' }}>
+      <main className="main-content-container">
         {activeTab === 'dashboard' && (
           <DashboardView
             onNavigate={handleNavigate}
@@ -103,10 +104,46 @@ const MainLayout: React.FC = () => {
   );
 };
 
+const AppContent: React.FC = () => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#f8fafc',
+        gap: '1rem',
+      }}>
+        <div style={{
+          width: '36px',
+          height: '36px',
+          borderRadius: '50%',
+          border: '3px solid #e2e8f0',
+          borderTopColor: '#0284c7',
+          animation: 'spin 0.8s linear infinite',
+        }} />
+        <span style={{ fontSize: '0.875rem', color: '#64748b', fontWeight: 500 }}>
+          Initializing PatientCare AI Portal...
+        </span>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <LoginView />;
+  }
+
+  return <MainLayout />;
+};
+
 export function App() {
   return (
     <AuthProvider>
-      <MainLayout />
+      <AppContent />
     </AuthProvider>
   );
 }

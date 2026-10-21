@@ -8,6 +8,7 @@ import {
   Clock,
   XCircle,
   MessageSquare,
+  Phone,
 } from 'lucide-react';
 import { VisitReminder } from '../types';
 import { api } from '../api';
@@ -76,7 +77,7 @@ export const RemindersView: React.FC<RemindersViewProps> = ({ onSelectPatient })
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
       {toast && (
         <div style={{
           background: '#0284c7',
@@ -95,14 +96,14 @@ export const RemindersView: React.FC<RemindersViewProps> = ({ onSelectPatient })
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Bell size={24} style={{ color: 'var(--color-purple)' }} /> WhatsApp Reminders Queue & Dispatch
+          <h1 style={{ fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <Bell size={24} style={{ color: 'var(--color-purple)' }} /> WhatsApp Reminders Queue &amp; Dispatch
           </h1>
           <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
             Automated WhatsApp notification pipeline with bounded retries and consent enforcement
           </p>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <button className="btn btn-secondary" onClick={fetchReminders}>
             <RefreshCw size={16} /> Refresh
           </button>
@@ -112,47 +113,149 @@ export const RemindersView: React.FC<RemindersViewProps> = ({ onSelectPatient })
         </div>
       </div>
 
-      {/* Filter Chips */}
-      <div className="card" style={{ padding: '1rem', display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-        <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-text-muted)', marginRight: '0.5rem' }}>
+      {/* Filter Chips - Horizontally scrollable on mobile */}
+      <div
+        className="card"
+        style={{
+          padding: '0.85rem 1rem',
+          display: 'flex',
+          gap: '0.5rem',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch',
+        }}
+      >
+        <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-text-muted)', marginRight: '0.5rem', whiteSpace: 'nowrap' }}>
           Delivery Status:
         </span>
         <button
           className={`btn btn-sm ${!statusFilter ? 'btn-primary' : 'btn-secondary'}`}
           onClick={() => { setStatusFilter(''); setPage(1); }}
+          style={{ whiteSpace: 'nowrap' }}
         >
           All ({total})
         </button>
         <button
           className={`btn btn-sm ${statusFilter === 'pending' ? 'btn-primary' : 'btn-secondary'}`}
           onClick={() => { setStatusFilter('pending'); setPage(1); }}
+          style={{ whiteSpace: 'nowrap' }}
         >
           Pending
         </button>
         <button
           className={`btn btn-sm ${statusFilter === 'sent' ? 'btn-primary' : 'btn-secondary'}`}
           onClick={() => { setStatusFilter('sent'); setPage(1); }}
+          style={{ whiteSpace: 'nowrap' }}
         >
           Sent / Delivered
         </button>
         <button
           className={`btn btn-sm ${statusFilter === 'failed' ? 'btn-primary' : 'btn-secondary'}`}
           onClick={() => { setStatusFilter('failed'); setPage(1); }}
+          style={{ whiteSpace: 'nowrap' }}
         >
           Failed / Retries Exhausted
         </button>
         <button
           className={`btn btn-sm ${statusFilter === 'cancelled' ? 'btn-primary' : 'btn-secondary'}`}
           onClick={() => { setStatusFilter('cancelled'); setPage(1); }}
+          style={{ whiteSpace: 'nowrap' }}
         >
           Cancelled / Opted Out
         </button>
       </div>
 
-      {/* Table */}
-      <div className="card" style={{ padding: 0 }}>
+      {/* Mobile Cards View (Visible on screens <= 768px) */}
+      <div className="reminders-mobile-cards" style={{ display: 'none' }}>
+        {loading ? (
+          <div className="card" style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+            Loading WhatsApp reminder queue...
+          </div>
+        ) : reminders.length === 0 ? (
+          <div className="card" style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+            No reminders found in this queue.
+          </div>
+        ) : (
+          reminders.map((r) => (
+            <div
+              key={r.reminder_id}
+              className="card"
+              style={{
+                padding: '1.1rem 1.25rem',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.75rem',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div>
+                  <div
+                    style={{ fontWeight: 800, fontSize: '1rem', color: '#0284c7', cursor: 'pointer' }}
+                    onClick={() => onSelectPatient(r.patient_id)}
+                  >
+                    {r.patient_name || `Patient #${r.patient_id}`}
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Phone size={13} color="#15803d" />
+                    <span style={{ fontFamily: 'monospace', fontWeight: 600 }}>{r.whatsapp_no}</span>
+                  </div>
+                </div>
+                <StatusBadge status={r.status} />
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: '#64748b', background: '#f8fafc', padding: '0.5rem 0.75rem', borderRadius: '8px', flexWrap: 'wrap', gap: '0.35rem' }}>
+                <div>
+                  <span style={{ fontWeight: 600, color: '#475569' }}>Scheduled: </span>
+                  {new Date(r.scheduled_at).toLocaleDateString()}{' '}
+                  {new Date(r.scheduled_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </div>
+                <div>
+                  <span style={{ fontWeight: 600, color: '#475569' }}>Sent: </span>
+                  {r.sent_at ? new Date(r.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }) : '—'}
+                </div>
+              </div>
+
+              {r.message && (
+                <div style={{ fontSize: '0.82rem', color: '#334155', background: '#f8fafc', padding: '0.65rem 0.85rem', borderRadius: '8px', borderLeft: '3px solid #0284c7', lineHeight: 1.4 }}>
+                  {r.message}
+                </div>
+              )}
+
+              {r.failure_reason && (
+                <div style={{ fontSize: '0.75rem', color: '#dc2626', background: '#fef2f2', padding: '0.4rem 0.65rem', borderRadius: '6px' }}>
+                  {r.failure_reason}
+                </div>
+              )}
+
+              <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', marginTop: '0.25rem' }}>
+                {r.status !== 'sent' && (
+                  <button
+                    className="btn btn-primary btn-sm"
+                    style={{ flex: 1 }}
+                    disabled={sendingId === r.reminder_id}
+                    onClick={() => handleSendNow(r.reminder_id)}
+                  >
+                    <Send size={13} /> {sendingId === r.reminder_id ? 'Sending...' : 'Send Now'}
+                  </button>
+                )}
+                <button
+                  className="btn btn-secondary btn-sm"
+                  style={{ flex: r.status === 'sent' ? 1 : undefined }}
+                  onClick={() => onSelectPatient(r.patient_id)}
+                >
+                  View Profile
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Desktop / Tablet Table */}
+      <div className="card reminders-desktop-table" style={{ padding: 0 }}>
         <div className="table-container">
-          <table className="data-table">
+          <table className="data-table" style={{ minWidth: '780px' }}>
             <thead>
               <tr>
                 <th>Scheduled At</th>
